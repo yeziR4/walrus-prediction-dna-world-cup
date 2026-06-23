@@ -170,11 +170,10 @@ function renderFullCommunityProfile(record) {
 }
 
 function flagsForSlug(slug = '') {
-  const names = { arg:'Argentina', aus:'Australia', bel:'Belgium', bra:'Brazil', can:'Canada', chn:'China', civ:"Côte d’Ivoire", col:'Colombia', cro:'Croatia', cze:'Czechia', den:'Denmark', ecu:'Ecuador', egy:'Egypt', eng:'England', fra:'France', ger:'Germany', gha:'Ghana', hai:'Haiti', irq:'Iraq', ita:'Italy', jpn:'Japan', kor:'South Korea', mar:'Morocco', mex:'Mexico', ned:'Netherlands', nor:'Norway', nzl:'New Zealand', pan:'Panama', pol:'Poland', por:'Portugal', qat:'Qatar', sco:'Scotland', sen:'Senegal', rsa:'South Africa', sui:'Switzerland', tun:'Tunisia', uru:'Uruguay', usa:'United States' };
-  const flags = { eng:'gb-eng', sco:'gb-sct', kor:'kr', sui:'ch', ned:'nl', rsa:'za', ger:'de', den:'dk', por:'pt', cze:'cz', nzl:'nz', chn:'cn', mar:'ma' };
-  const codes = String(slug).toLowerCase().split('-').slice(1, 3).filter(code => names[code]);
+  const names = { arg:'Argentina', aus:'Australia', bel:'Belgium', bih:'Bosnia and Herzegovina', bra:'Brazil', can:'Canada', chn:'China', civ:"Côte d'Ivoire", col:'Colombia', cro:'Croatia', cze:'Czechia', den:'Denmark', ecu:'Ecuador', egy:'Egypt', eng:'England', fra:'France', ger:'Germany', gha:'Ghana', hai:'Haiti', irn:'Iran', irq:'Iraq', ita:'Italy', jpn:'Japan', kor:'South Korea', mar:'Morocco', mex:'Mexico', ned:'Netherlands', nld:'Netherlands', nor:'Norway', nzl:'New Zealand', pan:'Panama', par:'Paraguay', pol:'Poland', por:'Portugal', qat:'Qatar', sco:'Scotland', sen:'Senegal', rsa:'South Africa', sui:'Switzerland', tun:'Tunisia', uru:'Uruguay', usa:'United States' };
+  const codes = String(slug).toLowerCase().split('-').filter(code => names[code]).slice(0, 2);
   if (!codes.length) return '<span class="flag-chip world">WC</span>';
-  return codes.map(code => `<span class="flag-chip"><img src="https://flagcdn.com/w40/${flags[code] || code}.png" alt="${escapeHtml(names[code])} flag" loading="lazy"><small>${code.toUpperCase()}</small></span>`).join('');
+  return codes.map(code => flagChip(code, names[code])).join('');
 }
 
 document.querySelector('#community-history-toggle').addEventListener('click', event => {
@@ -184,10 +183,23 @@ document.querySelector('#community-history-toggle').addEventListener('click', ev
 });
 function titleCase(value) { return String(value).replaceAll('_', ' ').replace(/\b\w/g, char => char.toUpperCase()); }
 function flagsForEvent(event) {
-  const flags = { Germany: 'de', "Cote d'Ivoire": 'ci', 'United States': 'us', Scotland: 'gb-sct', Morocco: 'ma', Brazil: 'br', Haiti: 'ht', Mexico: 'mx', 'Korea Republic': 'kr', Canada: 'ca', Qatar: 'qa', Czechia: 'cz', 'South Africa': 'za', Ghana: 'gh', Panama: 'pa', England: 'gb-eng', Croatia: 'hr', Ecuador: 'ec', Netherlands: 'nl', Japan: 'jp', Switzerland: 'ch' };
-  const matches = Object.entries(flags).filter(([country]) => event.includes(country));
+  const flags = { Germany: 'ger', "Cote d'Ivoire": 'civ', "Côte d'Ivoire": 'civ', 'United States': 'usa', Scotland: 'sco', Morocco: 'mar', Brazil: 'bra', Haiti: 'hai', Mexico: 'mex', 'Korea Republic': 'kor', Canada: 'can', Qatar: 'qat', Czechia: 'cze', 'South Africa': 'rsa', Ghana: 'gha', Panama: 'pan', England: 'eng', Croatia: 'cro', Ecuador: 'ecu', Netherlands: 'nld', Japan: 'jpn', Switzerland: 'sui', Belgium: 'bel', Iran: 'irn', Bosnia: 'bih', Paraguay: 'par' };
+  const matches = Object.entries(flags).filter(([country]) => String(event).includes(country));
   if (!matches.length) return '<span class="flag-chip world">WC</span>';
-  return matches.map(([country, code]) => `<span class="flag-chip"><img src="https://flagcdn.com/w40/${code}.png" alt="${escapeHtml(country)} flag" loading="lazy"><small>${code.split('-').at(-1).toUpperCase()}</small></span>`).join('');
+  return matches.map(([country, code]) => flagChip(code, country)).join('');
+}
+
+function flagChip(code, name) {
+  return `<span class="flag-chip" title="${escapeHtml(name)}"><span aria-hidden="true">${flagEmoji(code)}</span><small>${escapeHtml(displayCode(code))}</small></span>`;
+}
+
+function flagEmoji(code) {
+  const flags = { arg:'🇦🇷', aus:'🇦🇺', bel:'🇧🇪', bih:'🇧🇦', bra:'🇧🇷', can:'🇨🇦', chn:'🇨🇳', civ:'🇨🇮', col:'🇨🇴', cro:'🇭🇷', cze:'🇨🇿', den:'🇩🇰', ecu:'🇪🇨', egy:'🇪🇬', eng:'🏴', fra:'🇫🇷', ger:'🇩🇪', gha:'🇬🇭', hai:'🇭🇹', irn:'🇮🇷', irq:'🇮🇶', ita:'🇮🇹', jpn:'🇯🇵', kor:'🇰🇷', mar:'🇲🇦', mex:'🇲🇽', ned:'🇳🇱', nld:'🇳🇱', nor:'🇳🇴', nzl:'🇳🇿', pan:'🇵🇦', par:'🇵🇾', pol:'🇵🇱', por:'🇵🇹', qat:'🇶🇦', sco:'🏴', sen:'🇸🇳', rsa:'🇿🇦', sui:'🇨🇭', tun:'🇹🇳', uru:'🇺🇾', usa:'🇺🇸' };
+  return flags[code] || '🏆';
+}
+
+function displayCode(code) {
+  return ({ eng: 'ENG', sco: 'SCO', nld: 'NED', ned: 'NED', kor: 'KOR', sui: 'SUI', rsa: 'RSA', cze: 'CZE', civ: 'CIV', bih: 'BIH', irn: 'IRN', par: 'PAR' })[code] || String(code).toUpperCase();
 }
 
 const historyToggle = document.querySelector('#history-toggle');

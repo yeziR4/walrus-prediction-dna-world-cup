@@ -25,16 +25,18 @@ const residentCacheFile = path.join(dataDir, 'resident-agent-feed.json');
 let residentRefreshPromise;
 const autoPublishDna = process.env.AUTO_PUBLISH_DNA === 'true';
 const mainnetPublishEnabled = process.env.MAINNET_PUBLISH_ENABLED === 'true';
+const autoPublishRoom = process.env.AUTO_PUBLISH_ROOM === 'true' || (!mainnetPublishEnabled && process.env.AUTO_PUBLISH_ROOM !== 'false');
 const maxDailyPublishes = Number(process.env.MAX_DAILY_PUBLISHES || 25);
 let publisherChain = Promise.resolve();
 
 await Promise.all([fs.mkdir(stagedDir, { recursive: true }), fs.mkdir(approvedDir, { recursive: true }), fs.mkdir(dnaDir, { recursive: true }), fs.mkdir(dnaApprovedDir, { recursive: true }), fs.mkdir(manualPicksDir, { recursive: true })]);
 await recoverPublisherQueue();
+await recoverRoomQueue();
 
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    if (url.pathname === '/api/health') return json(res, 200, { ok: true, apiVersion: 'dna-auto-v2', network: 'Walrus Mainnet', mode: mainnetPublishEnabled && process.env.WALRUS_WRITE_COMMAND ? 'live-write' : 'demo-safe', autoPublishDna, mainnetPublishEnabled });
+    if (url.pathname === '/api/health') return json(res, 200, { ok: true, apiVersion: 'dna-auto-v2', network: 'Walrus Mainnet', mode: mainnetPublishEnabled && process.env.WALRUS_WRITE_COMMAND ? 'live-write' : 'demo-safe', autoPublishDna, autoPublishRoom, mainnetPublishEnabled });
     if (url.pathname === '/api/portfolio' && req.method === 'GET') return portfolio(res);
     if (url.pathname === '/api/room/head' && req.method === 'GET') return json(res, 200, await readJson(path.join(dataDir, 'room-head.json')));
     if (url.pathname === '/api/room/feed' && req.method === 'GET') return roomFeed(res);
@@ -571,9 +573,28 @@ async function submit(req, res) {
 async function stageContribution(contribution, res) {
   const id = makeId();
   const record = { id, status: 'staged', submittedAt: new Date().toISOString(), contribution };
-  await writeJson(path.join(stagedDir, `${id}.json`), record);
+  const source = path.join(stagedDir, `${id}.json`);
+  await writeJson(source, record);
   await audit({ event: 'contribution.staged', id, agent: record.contribution.agent });
+  if (autoPublishRoom) {
+    const published = await publishRoomContribution(record, source);
+    return json(res, 202, { id, status: published.record.status, message: published.record.walrus?.live ? 'Contribution classified, published, and added to the room.' : 'Contribution classified and added to the live demo room.', roomHead: published.roomHead });
+  }
   return json(res, 202, { id, status: 'staged', message: 'Contribution validated and queued for human approval.' });
+}
+
+async function recoverRoomQueue() {
+  if (!autoPublishRoom) return;
+  const files = (await fs.readdir(stagedDir)).filter(file => file.endsWith('.json'));
+  for (const file of files) {
+    const source = path.join(stagedDir, file);
+    try {
+      const record = await readJson(source);
+      if (record.status === 'staged') await publishRoomContribution(record, source);
+    } catch (error) {
+      console.warn('Room auto-publish recovery skipped one staged record:', safeError(error));
+    }
+  }
 }
 
 async function moderationList(req, res) {
@@ -594,24 +615,31 @@ async function moderate(req, res, id, action) {
     await fs.rm(source); await audit({ event: 'contribution.rejected', id });
     return json(res, 200, record);
   }
+  const result = await publishRoomContribution(record, source);
+  return json(res, 200, { record: result.record, roomHead: result.roomHead });
+}
+
+async function publishRoomContribution(record, source) {
+  const id = record.id;
   const contributionFile = path.join(approvedDir, `${id}.contribution.json`);
   await writeJson(contributionFile, record.contribution);
   const write = await walrusWrite(contributionFile, process.env.WALRUS_WRITE_COMMAND);
   record = { ...record, status: write.live ? 'published' : 'approved_demo', reviewedAt: new Date().toISOString(), walrus: write };
   await writeJson(path.join(approvedDir, `${id}.json`), record);
-  await fs.rm(source);
+  await fs.rm(source, { force: true });
   const oldHead = await readJson(path.join(dataDir, 'room-head.json'));
+  const alreadyIndexed = (oldHead.contributions || []).some(item => item.id === id);
   const generatedHead = {
-    room: oldHead.room, version: Number(oldHead.version || 0) + 1, previousHead: oldHead.blobId,
-    updatedAt: new Date().toISOString(), contributions: [...(oldHead.contributions || []), { id, type: record.contribution.type, blobId: write.blobId, agent: record.contribution.agent }]
+    room: oldHead.room, version: alreadyIndexed ? Number(oldHead.version || 0) : Number(oldHead.version || 0) + 1, previousHead: oldHead.blobId,
+    updatedAt: new Date().toISOString(), contributions: alreadyIndexed ? oldHead.contributions : [...(oldHead.contributions || []), { id, type: record.contribution.type, blobId: write.blobId, agent: record.contribution.agent }]
   };
   const generatedPath = path.join(dataDir, 'room-head.generated.json');
   await writeJson(generatedPath, generatedHead);
   const headWrite = await walrusWrite(generatedPath, process.env.WALRUS_HEAD_WRITE_COMMAND);
   const finalHead = headWrite.live ? { ...generatedHead, blobId: headWrite.blobId, readUrl: `${aggregator}/v1/blobs/${headWrite.blobId}` } : { ...generatedHead, blobId: oldHead.blobId, readUrl: oldHead.readUrl, pendingMainnetWrite: true };
   await writeJson(path.join(dataDir, 'room-head.json'), finalHead);
-  await audit({ event: 'contribution.approved', id, contributionBlobId: write.blobId, roomHeadBlobId: finalHead.blobId, live: write.live });
-  return json(res, 200, { record, roomHead: finalHead });
+  await audit({ event: autoPublishRoom ? 'contribution.auto_approved' : 'contribution.approved', id, contributionBlobId: write.blobId, roomHeadBlobId: finalHead.blobId, live: write.live });
+  return { record, roomHead: finalHead };
 }
 
 async function walrusWrite(file, commandTemplate) {

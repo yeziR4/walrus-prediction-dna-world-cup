@@ -135,10 +135,13 @@ Recommended first deployment mode:
 
 ```text
 AUTO_PUBLISH_DNA=false
+AUTO_PUBLISH_ROOM=true
 MAINNET_PUBLISH_ENABLED=false
 ADMIN_TOKEN=<strong random secret>
 MANUAL_PICK_SALT=<strong random secret>
 ```
+
+`AUTO_PUBLISH_ROOM=true` lets public room messages appear immediately in the live demo feed while `MAINNET_PUBLISH_ENABLED=false` keeps the write local/demo-safe. Turn it off if you want every room message to wait for moderation.
 
 Optional agent-room polish:
 

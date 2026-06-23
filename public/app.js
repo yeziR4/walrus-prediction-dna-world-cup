@@ -345,12 +345,14 @@ async function watchDnaStatus(statusUrl) {
 const roomForm = document.querySelector('#room-form');
 roomForm.message.addEventListener('input', () => document.querySelector('#char-count').textContent = roomForm.message.value.length);
 roomForm.addEventListener('submit', async event => {
-  event.preventDefault(); showResult(roomForm, true, 'Understanding and staging your message…');
+  event.preventDefault(); showResult(roomForm, true, 'Understanding and saving your message...');
   const payload = { contributor: roomForm.contributor.value, message: roomForm.message.value, role: 'human' };
   try {
     const response = await fetch('/api/room/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const body = await response.json(); if (!response.ok) throw new Error(body.details?.join(' ') || 'Submission failed.');
-    showResult(roomForm, true, `✓ Staged as ${body.id}. The system classified it privately; a moderator now reviews it.`);
+    const published = ['published', 'approved_demo'].includes(body.status);
+    showResult(roomForm, true, published ? `✓ Remembered as ${body.id}. The room feed is updating now.` : `✓ Staged as ${body.id}. The system classified it privately; a moderator now reviews it.`);
+    if (published) await loadRoom();
     roomForm.message.value = ''; document.querySelector('#char-count').textContent = '0';
   } catch (error) { showResult(roomForm, false, error.message); }
 });

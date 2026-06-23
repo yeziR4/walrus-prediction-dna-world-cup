@@ -137,11 +137,14 @@ Recommended first deployment mode:
 AUTO_PUBLISH_DNA=false
 AUTO_PUBLISH_ROOM=true
 MAINNET_PUBLISH_ENABLED=false
+DATA_DIR=/data
 ADMIN_TOKEN=<strong random secret>
 MANUAL_PICK_SALT=<strong random secret>
 ```
 
 `AUTO_PUBLISH_ROOM=true` lets public room messages appear immediately in the live demo feed while `MAINNET_PUBLISH_ENABLED=false` keeps the write local/demo-safe. Turn it off if you want every room message to wait for moderation.
+
+For Railway, attach a persistent volume and mount it at `/data`, then set `DATA_DIR=/data`. On first boot the app seeds the volume from the repository demo data. After that it preserves live profile requests, room messages, Walrus receipts, and updated indexes across redeploys.
 
 Optional agent-room polish:
 
@@ -160,6 +163,7 @@ The app deliberately starts in **demo-safe** mode: approvals exercise the comple
 ADMIN_TOKEN=strong-secret
 WALRUS_WRITE_COMMAND=walrus store --epochs 5 {file}
 WALRUS_HEAD_WRITE_COMMAND=walrus store --epochs 5 {file}
+WALRUS_DNA_INDEX_WRITE_COMMAND=walrus store --epochs 5 {file}
 ```
 
 The adapter executes the command directly (not through a shell), extracts the returned blob ID, and updates `data/room-head.json`. The moderation API is:
@@ -172,6 +176,22 @@ Authorization: Bearer $ADMIN_TOKEN
 ```
 
 Before public deployment, put the server behind HTTPS, set `ADMIN_TOKEN`, restrict gateway CORS to the public origin, add rate limiting, and move staged data to durable storage.
+
+### One-time Mainnet backfill
+
+When the project wallet is configured in the environment and the Walrus CLI command is known-good, publish every existing approved demo profile and approved room message to Walrus Mainnet:
+
+```powershell
+$env:MAINNET_PUBLISH_ENABLED='true'
+$env:WALRUS_WRITE_COMMAND='walrus store --epochs 5 {file}'
+$env:WALRUS_HEAD_WRITE_COMMAND='walrus store --epochs 5 {file}'
+$env:WALRUS_DNA_INDEX_WRITE_COMMAND='walrus store --epochs 5 {file}'
+npm run mainnet:backfill
+```
+
+The script refuses to run unless `MAINNET_PUBLISH_ENABLED=true` and the `--yes` guard in the npm script is present. It writes each approved DNA profile, rebuilds `dna-index.json` from all approved records, writes the index, writes approved room contributions, and advances the room head. After this, profile receipts switch from `LOCAL DEMO` to `WALRUS MAINNET` once the updated data is deployed or present in the mounted `DATA_DIR`.
+
+Never paste private keys, seed phrases, SUI keys, WAL keys, or project-wallet credentials into chat, GitHub, frontend code, or logs. Use a dedicated demo/project wallet and inject secrets only through Railway variables or a local shell session.
 
 ## Judging criteria mapping
 

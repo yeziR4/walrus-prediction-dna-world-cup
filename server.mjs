@@ -11,7 +11,8 @@ import { buildPolymarketDna } from './polymarket.mjs';
 const execFileAsync = promisify(execFile);
 const root = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(root, 'public');
-const dataDir = path.join(root, 'data');
+const seedDataDir = path.join(root, 'data');
+const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : seedDataDir;
 const stagedDir = path.join(dataDir, 'staged');
 const approvedDir = path.join(dataDir, 'approved');
 const dnaDir = path.join(dataDir, 'dna-requests');
@@ -30,13 +31,43 @@ const maxDailyPublishes = Number(process.env.MAX_DAILY_PUBLISHES || 25);
 let publisherChain = Promise.resolve();
 
 await Promise.all([fs.mkdir(stagedDir, { recursive: true }), fs.mkdir(approvedDir, { recursive: true }), fs.mkdir(dnaDir, { recursive: true }), fs.mkdir(dnaApprovedDir, { recursive: true }), fs.mkdir(manualPicksDir, { recursive: true })]);
+await seedPersistentDataDir();
 await recoverPublisherQueue();
 await recoverRoomQueue();
+
+async function seedPersistentDataDir() {
+  if (dataDir === seedDataDir) return;
+  await copySeedFile('portfolio-fallback.json');
+  await copySeedFile('room-head.json');
+  await copySeedFile('dna-index.json');
+  await copySeedDir('dna-approved');
+}
+
+async function copySeedFile(fileName) {
+  const source = path.join(seedDataDir, fileName);
+  const target = path.join(dataDir, fileName);
+  try { await fs.access(target); }
+  catch { await fs.copyFile(source, target); }
+}
+
+async function copySeedDir(dirName) {
+  const sourceDir = path.join(seedDataDir, dirName);
+  const targetDir = path.join(dataDir, dirName);
+  await fs.mkdir(targetDir, { recursive: true });
+  let files = [];
+  try { files = await fs.readdir(sourceDir); } catch { return; }
+  for (const file of files.filter(name => name.endsWith('.json'))) {
+    const source = path.join(sourceDir, file);
+    const target = path.join(targetDir, file);
+    try { await fs.access(target); }
+    catch { await fs.copyFile(source, target); }
+  }
+}
 
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    if (url.pathname === '/api/health') return json(res, 200, { ok: true, apiVersion: 'dna-auto-v2', network: 'Walrus Mainnet', mode: mainnetPublishEnabled && process.env.WALRUS_WRITE_COMMAND ? 'live-write' : 'demo-safe', autoPublishDna, autoPublishRoom, mainnetPublishEnabled });
+    if (url.pathname === '/api/health') return json(res, 200, { ok: true, apiVersion: 'dna-auto-v2', network: 'Walrus Mainnet', mode: mainnetPublishEnabled && process.env.WALRUS_WRITE_COMMAND ? 'live-write' : 'demo-safe', storage: process.env.DATA_DIR ? 'persistent-data-dir' : 'repo-local-data-dir', dataDir, autoPublishDna, autoPublishRoom, mainnetPublishEnabled });
     if (url.pathname === '/api/portfolio' && req.method === 'GET') return portfolio(res);
     if (url.pathname === '/api/room/head' && req.method === 'GET') return json(res, 200, await readJson(path.join(dataDir, 'room-head.json')));
     if (url.pathname === '/api/room/feed' && req.method === 'GET') return roomFeed(res);

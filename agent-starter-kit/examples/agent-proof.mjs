@@ -1,4 +1,4 @@
-const gateway = process.env.GATEWAY_URL || 'http://localhost:4173';
+const gateway = process.env.GATEWAY_URL || 'https://walrus-prediction-dna-world-cup-production.up.railway.app';
 
 const dnaPayload = {
   polymarketAddress: process.env.POLYMARKET_ADDRESS || '0xd52de8b442d1de17fdb3d161d3983be2441c412d',

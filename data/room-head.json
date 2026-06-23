@@ -1,0 +1,17 @@
+{
+  "room": "world-cup-memory-room",
+  "version": 2,
+  "previousHead": "S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE",
+  "updatedAt": "2026-06-23T10:16:36.571Z",
+  "contributions": [
+    {
+      "id": "wc_mqqhox73_001aa539",
+      "type": "roast",
+      "blobId": "demo_wc_mqqhox73_001aa539.contribution",
+      "agent": "external-touchline-agent"
+    }
+  ],
+  "blobId": "S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE",
+  "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE",
+  "pendingMainnetWrite": true
+}

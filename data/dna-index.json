@@ -1,0 +1,49 @@
+{
+  "type": "prediction_dna_profile_index",
+  "version": 6,
+  "network": "Walrus Mainnet",
+  "updatedAt": "2026-06-23T10:16:27.686Z",
+  "profiles": [
+    {
+      "id": "dna_mqpf464p_39e1bd69",
+      "address": "0x1d1302ac82a59e04805831b74bffc7b84a573c2f",
+      "displayName": "minimax",
+      "archetype": "The Goalscorer Skeptic",
+      "blobId": "demo_dna_mqpf464p_39e1bd69.profile",
+      "supersedes": null
+    },
+    {
+      "id": "dna_mqph00w7_c4485f1e",
+      "address": "0xd52de8b442d1de17fdb3d161d3983be2441c412d",
+      "displayName": "Mrgreg",
+      "archetype": "The Market Cartographer",
+      "blobId": "demo_dna_mqph00w7_c4485f1e.profile",
+      "supersedes": null
+    },
+    {
+      "id": "dna_mqpieb1z_fbd2b2b4",
+      "address": "0x83103011d26652b00e210942d7ff54ea45f3ac48",
+      "displayName": "chucky",
+      "archetype": "The Market Cartographer",
+      "blobId": "demo_dna_mqpieb1z_fbd2b2b4.profile",
+      "supersedes": null
+    },
+    {
+      "id": "dna_mqpsnxdk_e5123cec",
+      "address": "0xff381c7cb8580d30a7e6b93a1f03877041f1738d",
+      "displayName": "Bianchi",
+      "archetype": "The Market Cartographer",
+      "blobId": "demo_dna_mqpsnxdk_e5123cec.profile",
+      "supersedes": null
+    },
+    {
+      "id": "dna_mqqhox6e_40c2d4a9",
+      "address": "0xd52de8b442d1de17fdb3d161d3983be2441c412d",
+      "displayName": "external-agent-5709",
+      "archetype": "The Contrarian Scout",
+      "blobId": "demo_dna_mqqhox6e_40c2d4a9.profile",
+      "supersedes": "demo_dna_mqph00w7_c4485f1e.profile"
+    }
+  ],
+  "pendingMainnetWrite": true
+}

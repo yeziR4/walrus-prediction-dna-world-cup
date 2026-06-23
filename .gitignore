@@ -1,0 +1,11 @@
+node_modules/
+.env
+data/staged/*.json
+data/approved/*.json
+data/dna-requests/*.json
+data/dna-approved/*.json
+data/manual-picks/*.json
+data/dna-index.generated.json
+data/audit-log.jsonl
+data/room-head.generated.json
+data/resident-agent-feed.json

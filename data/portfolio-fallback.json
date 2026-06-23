@@ -1,0 +1,32 @@
+{
+  "source": "Walrus Mainnet",
+  "portfolioBlobId": "oboOmf69HEcLGYFrNR7S9wnCfakTiP_3EieWk31WQZY",
+  "insightsBlobId": "E90UR1RRmf9oX_tGymNKfqDW0AR8ppGu1kCn-nd07Mw",
+  "snapshotAt": "2026-06-21T14:15:30Z",
+  "simulated": true,
+  "summary": { "count": 14, "resolved": 14, "winRate": 57.1, "totalPnl": -6.518, "roi": -5.2, "avgConfidence": 48.3, "calibrationGap": -8.9, "reliability": "low (n=14) — early signal" },
+  "marketTypes": [
+    { "name": "Match winner", "n": 2, "winRate": 100.0, "pnl": 20.2 },
+    { "name": "Both teams score", "n": 6, "winRate": 66.7, "pnl": 14.98 },
+    { "name": "Over / under", "n": 5, "winRate": 40.0, "pnl": -21.7 },
+    { "name": "Props", "n": 1, "winRate": 0.0, "pnl": -20.0 }
+  ],
+  "traits": ["Underconfident", "Match-winner edge", "Longshot leak"],
+  "latestInsight": "Picks tagged 'longshot' are a leak: 0.0% win rate and -21.7u across two picks.",
+  "predictions": [
+    { "event": "Germany vs Cote d'Ivoire", "selection": "Both teams to score — Yes", "confidence": 67, "stake": 6.70, "outcome": "win", "pnl": 3.30, "blobId": "4JB09NM0ASwZWD1ASd2FdI6IERj3SRVy_GSzOMERlWQ" },
+    { "event": "United States — opponent TBC", "selection": "United States over 1.5 goals", "confidence": 56, "stake": 5.60, "outcome": "win", "pnl": 4.40, "blobId": "3wkcqgScIolQsgUVzxD4YMJxcOfAhZHrBjXyaqNTNiI" },
+    { "event": "Scotland vs Morocco", "selection": "Both teams to score — Yes", "confidence": 17, "stake": 1.70, "outcome": "loss", "pnl": -1.70, "blobId": "l4M4nuRBLk-niTpvqmBDb73rIUJpOVt1a3T3fXhmaWg" },
+    { "event": "Brazil vs Haiti", "selection": "Brazil over 2.5 goals", "confidence": 64, "stake": 12.80, "outcome": "win", "pnl": 7.20, "blobId": "vLoyYK5KRqZBelHwL0oNwUnZbGqopx36Jg_-6mcrrPA" },
+    { "event": "Mexico vs Korea Republic", "selection": "Over 2.5 goals", "confidence": 43, "stake": 8.60, "outcome": "loss", "pnl": -8.60, "blobId": "VGY7RBY0vktPpFySwOcNiRGO8aOAV43pqqmcz4f4DcE" },
+    { "event": "Canada vs Qatar", "selection": "Qatar over 0.5 goals", "confidence": 47, "stake": 4.70, "outcome": "loss", "pnl": -4.70, "blobId": "FXvFx1u8MWcsP0PBJZ6mSGoJZToLKeX16QNVSX_dKH0" },
+    { "event": "Czechia vs South Africa", "selection": "Both teams to score — Yes", "confidence": 53, "stake": 5.30, "outcome": "win", "pnl": 4.70, "blobId": "hZWnd5nsgrWxakc2qP-_9gHm3B3GC-xPTAk_3Qujrp4" },
+    { "event": "Ghana vs Panama", "selection": "Ghana to win outright", "confidence": 42, "stake": 8.40, "outcome": "win", "pnl": 11.60, "blobId": "oTsJ9TEkUVjLGBojAxcy1DVWVvkUXfnshk_cjXZBTJE" },
+    { "event": "England vs Croatia", "selection": "England to win", "confidence": 57, "stake": 11.40, "outcome": "win", "pnl": 8.60, "blobId": "LnAhSbagUWKhComgysNq6pQeuBa9krGlDiqh0UJX4iQ" },
+    { "event": "Cote d'Ivoire vs Ecuador", "selection": "Both teams to score — Yes", "confidence": 42, "stake": 4.20, "outcome": "loss", "pnl": -4.20, "blobId": "xjaqHIYku4JU0nncTU8PX5Kv8DH4x-Ly-KebV_ck8QI" },
+    { "event": "Netherlands vs Japan", "selection": "Both teams to score — Yes", "confidence": 53, "stake": 5.30, "outcome": "win", "pnl": 4.70, "blobId": "XgvMqGd6Li8ldxHMB18pepUNza0q1koyWiwr1Mf_2Ys" },
+    { "event": "Haiti vs Scotland", "selection": "Scotland over 2.5 goals", "confidence": 45, "stake": 20.00, "outcome": "loss", "pnl": -20.00, "blobId": "k8Bd4cwcz3eaIGwZPYQ8ghkHKq7JRltNISWq9kIrmXA" },
+    { "event": "Brazil vs Morocco", "selection": "Morocco to score 2+ goals", "confidence": 35, "stake": 20.00, "outcome": "loss", "pnl": -20.00, "blobId": "yExDgZ8X7qYbM-UNG8Gl2SAypASNthffB8_VQDlQif0" },
+    { "event": "Qatar vs Switzerland", "selection": "Both teams to score — Yes", "confidence": 55, "stake": 10.00, "outcome": "win", "pnl": 8.18, "blobId": "RtwlajSCdu9a3DDCHZ1j0FcaYUPE9BJoOk53gQwmg6g" }
+  ]
+}

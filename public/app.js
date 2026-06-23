@@ -305,8 +305,15 @@ dnaForm.addEventListener('submit', async event => {
     const response = await fetch('/api/dna/requests', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const body = await response.json(); if (!response.ok) throw new Error(body.details?.join(' ') || body.message || 'Request failed.');
     if (!body.profile?.summary) throw new Error('The server is running an older build. Stop it, restart with npm.cmd start, then hard-refresh this page.');
-    showResult(dnaForm, true, `✓ Built from Polymarket as ${body.id}. ${body.status === 'queued' ? 'Automatic publishing has started.' : 'Awaiting review before publishing.'}`);
+    const published = ['published', 'published_demo'].includes(body.status);
+    showResult(dnaForm, true, published ? `✓ Built from Polymarket as ${body.id}. Added to the shared DNA index.` : `✓ Built from Polymarket as ${body.id}. ${body.status === 'queued' ? 'Automatic publishing has started.' : 'Awaiting review before publishing.'}`);
     renderDnaPreview(body.profile);
+    if (published) {
+      const label = document.querySelector('#dna-publish-status');
+      if (label) label.textContent = body.message || 'Added to the shared DNA index.';
+      communityDnaLoaded = false;
+      if ((location.hash.slice(1) || 'home') === 'profile') await loadCommunityDna(true);
+    }
     if (body.status === 'queued' && body.statusUrl) watchDnaStatus(body.statusUrl);
   } catch (error) { showResult(dnaForm, false, error.message); }
   finally { submitButton.disabled = false; }

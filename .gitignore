@@ -14,6 +14,8 @@ data/dna-approved/*.json
 !data/dna-approved/dna_mqpsnxdk_e5123cec.profile.json
 !data/dna-approved/dna_mqqhox6e_40c2d4a9.json
 !data/dna-approved/dna_mqqhox6e_40c2d4a9.profile.json
+!data/dna-approved/dna_mqqu2073_2f107600.json
+!data/dna-approved/dna_mqqu2073_2f107600.profile.json
 data/manual-picks/*.json
 data/dna-index.generated.json
 data/audit-log.jsonl

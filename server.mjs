@@ -392,8 +392,13 @@ async function requestDna(req, res) {
     polymarketAddress: body.polymarketAddress.toLowerCase(), displayName: body.displayName?.trim() || null,
     profile, nextStep: autoPublishDna ? 'The publisher will validate, write, verify, and update the shared DNA index.' : 'Review the generated DNA, publish the approved profile to Walrus, then append it to the shared profile index.'
   };
-  await writeJson(path.join(dnaDir, `${id}.json`), record);
+  const source = path.join(dnaDir, `${id}.json`);
+  await writeJson(source, record);
   await audit({ event: 'dna.requested', id, polymarketAddress: record.polymarketAddress });
+  if (autoPublishDna && !mainnetPublishEnabled) {
+    const published = await publishDnaRecord(record, source);
+    return json(res, 202, { id, status: published.record.status, statusUrl: `/api/dna/requests/${id}`, message: 'World Cup history analyzed and added to the shared DNA index in demo-safe mode.', profile, walrus: published.record.walrus, indexWrite: published.record.indexWrite });
+  }
   if (autoPublishDna) enqueueDnaPublish(id);
   return json(res, 202, { id, status: record.status, statusUrl: `/api/dna/requests/${id}`, message: autoPublishDna ? 'World Cup history analyzed and queued for automatic publishing.' : 'World Cup history analyzed and staged for review.', profile });
 }

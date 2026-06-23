@@ -4,6 +4,16 @@ data/staged/*.json
 data/approved/*.json
 data/dna-requests/*.json
 data/dna-approved/*.json
+!data/dna-approved/dna_mqpf464p_39e1bd69.json
+!data/dna-approved/dna_mqpf464p_39e1bd69.profile.json
+!data/dna-approved/dna_mqph00w7_c4485f1e.json
+!data/dna-approved/dna_mqph00w7_c4485f1e.profile.json
+!data/dna-approved/dna_mqpieb1z_fbd2b2b4.json
+!data/dna-approved/dna_mqpieb1z_fbd2b2b4.profile.json
+!data/dna-approved/dna_mqpsnxdk_e5123cec.json
+!data/dna-approved/dna_mqpsnxdk_e5123cec.profile.json
+!data/dna-approved/dna_mqqhox6e_40c2d4a9.json
+!data/dna-approved/dna_mqqhox6e_40c2d4a9.profile.json
 data/manual-picks/*.json
 data/dna-index.generated.json
 data/audit-log.jsonl

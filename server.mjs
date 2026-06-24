@@ -39,6 +39,7 @@ async function seedPersistentDataDir() {
   if (dataDir === seedDataDir) return;
   await copySeedFile('portfolio-fallback.json');
   await copySeedFile('room-head.json');
+  await upgradePendingSeedFile('room-head.json');
   await copySeedFile('dna-index.json');
   await copySeedDir('dna-approved');
 }
@@ -62,6 +63,17 @@ async function copySeedDir(dirName) {
     try { await fs.access(target); }
     catch { await fs.copyFile(source, target); }
   }
+}
+
+async function upgradePendingSeedFile(fileName) {
+  const source = path.join(seedDataDir, fileName);
+  const target = path.join(dataDir, fileName);
+  try {
+    const [seed, current] = await Promise.all([readJson(source), readJson(target)]);
+    if (current?.pendingMainnetWrite && seed?.blobId && seed.blobId !== current.blobId && !seed.pendingMainnetWrite) {
+      await writeJson(target, seed);
+    }
+  } catch {}
 }
 
 const server = http.createServer(async (req, res) => {

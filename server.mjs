@@ -17,6 +17,7 @@ const stagedDir = path.join(dataDir, 'staged');
 const approvedDir = path.join(dataDir, 'approved');
 const dnaDir = path.join(dataDir, 'dna-requests');
 const dnaApprovedDir = path.join(dataDir, 'dna-approved');
+const dnaRefreshDir = path.join(dataDir, 'dna-refresh');
 const manualPicksDir = path.join(dataDir, 'manual-picks');
 const port = Number(process.env.PORT || 4173);
 const aggregator = process.env.WALRUS_AGGREGATOR || 'https://aggregator.walrus-mainnet.walrus.space';
@@ -27,13 +28,17 @@ let residentRefreshPromise;
 const autoPublishDna = process.env.AUTO_PUBLISH_DNA === 'true';
 const mainnetPublishEnabled = process.env.MAINNET_PUBLISH_ENABLED === 'true';
 const autoPublishRoom = process.env.AUTO_PUBLISH_ROOM === 'true' || (!mainnetPublishEnabled && process.env.AUTO_PUBLISH_ROOM !== 'false');
+const dnaRefreshEnabled = process.env.DNA_REFRESH_ENABLED === 'true';
+const dnaRefreshIntervalHours = Number(process.env.DNA_REFRESH_INTERVAL_HOURS || 12);
 const maxDailyPublishes = Number(process.env.MAX_DAILY_PUBLISHES || 25);
 let publisherChain = Promise.resolve();
+let dnaRefreshPromise;
 
-await Promise.all([fs.mkdir(stagedDir, { recursive: true }), fs.mkdir(approvedDir, { recursive: true }), fs.mkdir(dnaDir, { recursive: true }), fs.mkdir(dnaApprovedDir, { recursive: true }), fs.mkdir(manualPicksDir, { recursive: true })]);
+await Promise.all([fs.mkdir(stagedDir, { recursive: true }), fs.mkdir(approvedDir, { recursive: true }), fs.mkdir(dnaDir, { recursive: true }), fs.mkdir(dnaApprovedDir, { recursive: true }), fs.mkdir(dnaRefreshDir, { recursive: true }), fs.mkdir(manualPicksDir, { recursive: true })]);
 await seedPersistentDataDir();
 await recoverPublisherQueue();
 await recoverRoomQueue();
+startDnaRefreshLoop();
 
 async function seedPersistentDataDir() {
   if (dataDir === seedDataDir) return;
@@ -96,7 +101,7 @@ async function upgradePendingSeedDir(dirName) {
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    if (url.pathname === '/api/health') return json(res, 200, { ok: true, apiVersion: 'dna-auto-v2', network: 'Walrus Mainnet', mode: mainnetPublishEnabled && process.env.WALRUS_WRITE_COMMAND ? 'live-write' : 'demo-safe', storage: process.env.DATA_DIR ? 'persistent-data-dir' : 'repo-local-data-dir', dataDir, autoPublishDna, autoPublishRoom, mainnetPublishEnabled });
+    if (url.pathname === '/api/health') return json(res, 200, { ok: true, apiVersion: 'dna-auto-v2', network: 'Walrus Mainnet', mode: mainnetPublishEnabled && process.env.WALRUS_WRITE_COMMAND ? 'live-write' : 'demo-safe', storage: process.env.DATA_DIR ? 'persistent-data-dir' : 'repo-local-data-dir', dataDir, autoPublishDna, autoPublishRoom, mainnetPublishEnabled, dnaRefreshEnabled, dnaRefreshIntervalHours });
     if (url.pathname === '/api/portfolio' && req.method === 'GET') return portfolio(res);
     if (url.pathname === '/api/room/head' && req.method === 'GET') return json(res, 200, await readJson(path.join(dataDir, 'room-head.json')));
     if (url.pathname === '/api/room/feed' && req.method === 'GET') return roomFeed(res);
@@ -108,6 +113,8 @@ const server = http.createServer(async (req, res) => {
     if (dnaStatusMatch && req.method === 'GET') return dnaRequestStatus(res, dnaStatusMatch[1]);
     if (url.pathname === '/api/dna/index' && req.method === 'GET') return json(res, 200, await readJson(path.join(dataDir, 'dna-index.json')));
     if (url.pathname === '/api/dna/profiles' && req.method === 'GET') return dnaProfiles(res);
+    if (url.pathname === '/api/dna/refresh' && req.method === 'GET') return dnaRefreshList(req, res);
+    if (url.pathname === '/api/dna/refresh' && req.method === 'POST') return runDnaRefreshNow(req, res);
     const dnaProfileMatch = url.pathname.match(/^\/api\/dna\/profiles\/([a-zA-Z0-9_-]+)$/);
     if (dnaProfileMatch && req.method === 'GET') return dnaProfile(res, dnaProfileMatch[1]);
     if (url.pathname === '/api/dna/moderation' && req.method === 'GET') return dnaModerationList(req, res);
@@ -516,6 +523,86 @@ async function dnaProfiles(res) {
     return bPrecision - aPrecision || Number(b.summary?.resolved || 0) - Number(a.summary?.resolved || 0);
   });
   return json(res, 200, { type: 'prediction_dna_profiles', network: index.network, version: index.version, updatedAt: index.updatedAt, count: items.length, items });
+}
+
+async function dnaRefreshList(req, res) {
+  if (!authorized(req)) return json(res, 401, { error: 'unauthorized' });
+  const files = (await fs.readdir(dnaRefreshDir)).filter(file => file.endsWith('.json'));
+  const items = await Promise.all(files.map(file => readJson(path.join(dnaRefreshDir, file))));
+  items.sort((a, b) => String(b.detectedAt || '').localeCompare(String(a.detectedAt || '')));
+  return json(res, 200, { type: 'prediction_dna_refresh_queue', count: items.length, items });
+}
+
+async function runDnaRefreshNow(req, res) {
+  if (!authorized(req)) return json(res, 401, { error: 'unauthorized' });
+  const result = await refreshAllDnaProfiles();
+  return json(res, 200, result);
+}
+
+function startDnaRefreshLoop() {
+  if (!dnaRefreshEnabled) return;
+  const intervalMs = Math.max(1, dnaRefreshIntervalHours) * 60 * 60 * 1000;
+  setTimeout(() => refreshAllDnaProfiles().catch(error => console.warn('DNA refresh skipped:', safeError(error))), 30_000);
+  setInterval(() => refreshAllDnaProfiles().catch(error => console.warn('DNA refresh skipped:', safeError(error))), intervalMs);
+}
+
+async function refreshAllDnaProfiles() {
+  if (dnaRefreshPromise) return dnaRefreshPromise;
+  dnaRefreshPromise = doRefreshAllDnaProfiles().finally(() => { dnaRefreshPromise = undefined; });
+  return dnaRefreshPromise;
+}
+
+async function doRefreshAllDnaProfiles() {
+  const index = await readJson(path.join(dataDir, 'dna-index.json'));
+  const checkedAt = new Date().toISOString();
+  const results = [];
+  for (const entry of index.profiles || []) {
+    try {
+      const record = await readJson(path.join(dnaApprovedDir, `${entry.id}.json`));
+      if (!record.polymarketAddress || !/^0x[a-fA-F0-9]{40}$/.test(record.polymarketAddress)) continue;
+      const refreshed = await buildPolymarketDna(record.polymarketAddress, record.profile?.displayName || record.displayName);
+      const currentSignature = dnaProfileSignature(record.profile);
+      const refreshedSignature = dnaProfileSignature(refreshed);
+      if (currentSignature !== refreshedSignature) {
+        const staged = {
+          id: record.id,
+          status: 'refresh_ready',
+          detectedAt: checkedAt,
+          polymarketAddress: record.polymarketAddress,
+          displayName: refreshed.displayName,
+          currentWalrus: record.walrus || null,
+          currentSummary: record.profile?.summary || null,
+          refreshedSummary: refreshed.summary,
+          refreshedProfile: refreshed,
+          nextStep: 'Review this refreshed DNA, then publish a new Walrus profile blob and update the shared DNA index.'
+        };
+        await writeJson(path.join(dnaRefreshDir, `${record.id}.json`), staged);
+        results.push({ id: record.id, status: 'refresh_ready', displayName: refreshed.displayName });
+      } else {
+        results.push({ id: record.id, status: 'unchanged', displayName: record.profile?.displayName });
+      }
+    } catch (error) {
+      results.push({ id: entry.id, status: 'failed', error: safeError(error) });
+    }
+  }
+  await audit({ event: 'dna.refresh_completed', checked: results.length, ready: results.filter(item => item.status === 'refresh_ready').length });
+  return { checkedAt, checked: results.length, refreshReady: results.filter(item => item.status === 'refresh_ready').length, items: results };
+}
+
+function dnaProfileSignature(profile) {
+  const summary = profile?.summary || {};
+  const marketTypes = (profile?.marketTypes || []).map(type => ({ name: type.name, n: Number(type.n || 0), winRate: type.winRate === null ? null : Number(type.winRate || 0) }));
+  return JSON.stringify({
+    totalWorldCupPositions: Number(summary.totalWorldCupPositions || 0),
+    resolved: Number(summary.resolved || 0),
+    open: Number(summary.open || 0),
+    winRate: Number(summary.winRate || 0),
+    avgConfidence: Number(summary.avgConfidence || 0),
+    calibrationGap: summary.calibrationGap === null ? null : Number(summary.calibrationGap || 0),
+    reliability: summary.reliability || '',
+    traits: profile?.traits || [],
+    marketTypes
+  });
 }
 
 function enqueueDnaPublish(id) {

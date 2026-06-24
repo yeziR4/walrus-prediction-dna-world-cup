@@ -155,6 +155,23 @@ GROQ_API_KEY=<server-side Groq key>
 GROQ_MODEL=llama-3.1-8b-instant
 ```
 
+Optional DNA refresh staging:
+
+```text
+DNA_REFRESH_ENABLED=false
+DNA_REFRESH_INTERVAL_HOURS=12
+```
+
+When enabled, the server periodically re-reads approved profile wallet addresses from Polymarket and writes changed profiles into `data/dna-refresh/*.json`. It does **not** overwrite the current public profile or publish to Walrus automatically. This keeps existing Mainnet receipts honest while creating a review queue for later project-wallet publication.
+
+Manual admin refresh endpoints:
+
+```text
+POST /api/dna/refresh
+GET  /api/dna/refresh
+Authorization: Bearer $ADMIN_TOKEN
+```
+
 Do not put private keys, seed phrases, SUI keys, WAL keys, or project-wallet credentials in GitHub. Mainnet publishing should only be enabled after Railway secrets, durable storage, rate limiting, and the publisher path are verified.
 
 ### Enable real Walrus writes

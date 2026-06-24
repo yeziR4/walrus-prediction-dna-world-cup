@@ -1,44 +1,45 @@
 {
   "id": "dna_mqpsnxdk_e5123cec",
-  "status": "published_demo",
+  "status": "published",
   "submittedAt": "2026-06-22T22:35:50.845Z",
   "polymarketAddress": "0xff381c7cb8580d30a7e6b93a1f03877041f1738d",
   "displayName": "Bianchi",
   "profile": {
     "schemaVersion": "1.0",
     "source": "Polymarket public data API",
-    "generatedAt": "2026-06-22T22:35:50.788Z",
+    "generatedAt": "2026-06-24T10:02:39Z",
     "address": "0xff381c7cb8580d30a7e6b93a1f03877041f1738d",
     "displayName": "Bianchi",
     "archetype": "The Market Cartographer",
     "summary": {
-      "totalWorldCupPositions": 25,
-      "resolved": 19,
-      "open": 6,
-      "winRate": 47.4,
-      "avgConfidence": 57.7,
-      "calibrationGap": 10.4,
-      "reliability": "Emerging profile"
+      "totalWorldCupPositions": 10,
+      "resolved": 8,
+      "open": 2,
+      "winRate": 0,
+      "avgConfidence": 39.3,
+      "calibrationGap": 39.3,
+      "reliability": "low"
     },
     "traits": [
-      "Match Prop edge",
-      "Overconfident"
+      "Longshot seeker",
+      "Other focus",
+      "Market cartographer"
     ],
     "marketTypes": [
       {
-        "name": "match_prop",
-        "n": 9,
-        "winRate": 44.4
+        "name": "other",
+        "n": 5,
+        "winRate": 0
+      },
+      {
+        "name": "match_winner",
+        "n": 4,
+        "winRate": 0
       },
       {
         "name": "over_under",
-        "n": 9,
-        "winRate": 44.4
-      },
-      {
-        "name": "exact_score",
         "n": 1,
-        "winRate": 100
+        "winRate": 0
       }
     ],
     "predictions": [
@@ -395,18 +396,20 @@
     ]
   },
   "nextStep": "The publisher will validate, write, verify, and update the shared DNA index.",
-  "updatedAt": "2026-06-22T22:35:50.947Z",
+  "updatedAt": "2026-06-24T10:02:39Z",
   "walrus": {
-    "live": false,
+    "live": true,
     "verified": true,
-    "blobId": "demo_dna_mqpsnxdk_e5123cec.profile",
-    "note": "Demo publication completed locally. Mainnet requires MAINNET_PUBLISH_ENABLED=true plus the Walrus write commands."
+    "blobId": "56qId9Sd0hDzDwEd15KCBwXio3DrStsf7y8wlMGb5IY",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/56qId9Sd0hDzDwEd15KCBwXio3DrStsf7y8wlMGb5IY",
+    "attempts": 1
   },
   "reviewedAt": "2026-06-22T22:35:50.947Z",
   "indexWrite": {
-    "live": false,
+    "live": true,
     "verified": true,
-    "blobId": "demo_dna-index.generated",
-    "note": "Demo publication completed locally. Mainnet requires MAINNET_PUBLISH_ENABLED=true plus the Walrus write commands."
+    "blobId": "xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "attempts": 1
   }
 }

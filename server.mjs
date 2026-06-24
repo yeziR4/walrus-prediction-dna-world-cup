@@ -41,7 +41,9 @@ async function seedPersistentDataDir() {
   await copySeedFile('room-head.json');
   await upgradePendingSeedFile('room-head.json');
   await copySeedFile('dna-index.json');
+  await upgradePendingSeedFile('dna-index.json');
   await copySeedDir('dna-approved');
+  await upgradePendingSeedDir('dna-approved');
 }
 
 async function copySeedFile(fileName) {
@@ -74,6 +76,21 @@ async function upgradePendingSeedFile(fileName) {
       await writeJson(target, seed);
     }
   } catch {}
+}
+
+async function upgradePendingSeedDir(dirName) {
+  const sourceDir = path.join(seedDataDir, dirName);
+  const targetDir = path.join(dataDir, dirName);
+  let files = [];
+  try { files = await fs.readdir(sourceDir); } catch { return; }
+  for (const file of files.filter(name => name.endsWith('.json') && !name.endsWith('.profile.json'))) {
+    const source = path.join(sourceDir, file);
+    const target = path.join(targetDir, file);
+    try {
+      const [seed, current] = await Promise.all([readJson(source), readJson(target)]);
+      if (seed?.walrus?.live && !current?.walrus?.live) await writeJson(target, seed);
+    } catch {}
+  }
 }
 
 const server = http.createServer(async (req, res) => {

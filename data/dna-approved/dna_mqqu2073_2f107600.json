@@ -1,48 +1,48 @@
 {
   "id": "dna_mqqu2073_2f107600",
-  "status": "published_demo",
+  "status": "published",
   "submittedAt": "2026-06-23T16:02:33.472Z",
   "polymarketAddress": "0x98db73fd6083ea3aa9814fb8caf945a818e854dc",
   "displayName": "agent-scout",
   "profile": {
     "schemaVersion": "1.0",
     "source": "Polymarket public data API",
-    "generatedAt": "2026-06-23T16:02:33.423Z",
+    "generatedAt": "2026-06-24T10:02:39Z",
     "address": "0x98db73fd6083ea3aa9814fb8caf945a818e854dc",
     "displayName": "agent-scout",
     "archetype": "The Contrarian Scout",
     "summary": {
-      "totalWorldCupPositions": 16,
-      "resolved": 7,
+      "totalWorldCupPositions": 13,
+      "resolved": 4,
       "open": 9,
-      "winRate": 57.1,
-      "avgConfidence": 28.9,
-      "calibrationGap": -28.3,
-      "reliability": "Early signal"
+      "winRate": 50,
+      "avgConfidence": 31.3,
+      "calibrationGap": -18.7,
+      "reliability": "very low"
     },
     "traits": [
-      "Contrarian leaning",
-      "Match Prop edge",
-      "Underconfident"
+      "Longshot seeker",
+      "Match Winner focus",
+      "Contrarian scout"
     ],
     "marketTypes": [
       {
-        "name": "match_prop",
-        "n": 2,
-        "winRate": 100
-      },
-      {
-        "name": "both_teams_score",
-        "n": 2,
-        "winRate": 50
-      },
-      {
         "name": "match_winner",
-        "n": 2,
+        "n": 9,
         "winRate": 0
       },
       {
         "name": "over_under",
+        "n": 2,
+        "winRate": 50
+      },
+      {
+        "name": "other",
+        "n": 1,
+        "winRate": 0
+      },
+      {
+        "name": "both_teams_score",
         "n": 1,
         "winRate": 100
       }
@@ -276,18 +276,20 @@
     "metadata": {}
   },
   "nextStep": "The publisher will validate, write, verify, and update the shared DNA index.",
-  "updatedAt": "2026-06-23T16:02:33.545Z",
+  "updatedAt": "2026-06-24T10:02:39Z",
   "walrus": {
-    "live": false,
+    "live": true,
     "verified": true,
-    "blobId": "demo_dna_mqqu2073_2f107600.profile",
-    "note": "Demo publication completed locally. Mainnet requires MAINNET_PUBLISH_ENABLED=true plus the Walrus write commands."
+    "blobId": "lkCF1YFOlziNqr4R5NOY5dPBYYMNyz_nES44glPtQtc",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/lkCF1YFOlziNqr4R5NOY5dPBYYMNyz_nES44glPtQtc",
+    "attempts": 1
   },
   "reviewedAt": "2026-06-23T16:02:33.545Z",
   "indexWrite": {
-    "live": false,
+    "live": true,
     "verified": true,
-    "blobId": "demo_dna-index.generated",
-    "note": "Demo publication completed locally. Mainnet requires MAINNET_PUBLISH_ENABLED=true plus the Walrus write commands."
+    "blobId": "xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "attempts": 1
   }
 }

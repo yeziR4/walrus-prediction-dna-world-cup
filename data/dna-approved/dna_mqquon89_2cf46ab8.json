@@ -1,0 +1,140 @@
+{
+  "id": "dna_mqquon89_2cf46ab8",
+  "status": "published",
+  "submittedAt": "2026-06-23T16:20:09.753Z",
+  "polymarketAddress": "0x071165d95ea23928f168e3ffd9603b14f7d88c76",
+  "displayName": "Rjefff",
+  "profile": {
+    "schemaVersion": "1.0",
+    "source": "Polymarket public data API",
+    "generatedAt": "2026-06-24T10:02:39Z",
+    "address": "0x071165d95ea23928f168e3ffd9603b14f7d88c76",
+    "displayName": "Rjefff",
+    "archetype": "The Market Cartographer",
+    "summary": {
+      "totalWorldCupPositions": 4,
+      "resolved": 3,
+      "open": 1,
+      "winRate": 66.7,
+      "avgConfidence": 61.6,
+      "calibrationGap": -5.1,
+      "reliability": "very low"
+    },
+    "traits": [
+      "Favorite backer",
+      "Match Winner focus",
+      "Market cartographer"
+    ],
+    "marketTypes": [
+      {
+        "name": "match_winner",
+        "n": 4,
+        "winRate": 66.7
+      }
+    ],
+    "predictions": [
+      {
+        "conditionId": "0xe690620297dfea974d20df84b4cf90460e46a26ec864353482717b90509a3c0b",
+        "asset": "101279272797775203956659007084828831261331275405585994446661991301016814257223",
+        "title": "Will Germany win on 2026-06-25?",
+        "eventSlug": "fifwc-ecu-ger-2026-06-25",
+        "slug": "fifwc-ecu-ger-2026-06-25-ger",
+        "selection": "Yes",
+        "confidence": 52,
+        "status": "open",
+        "marketType": "match_prop",
+        "endDate": "2026-06-25",
+        "receipt": "https://polymarket.com/event/fifwc-ecu-ger-2026-06-25",
+        "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/soccer ball-bba4025f77.png"
+      },
+      {
+        "conditionId": "0xebb200cb08bbe89c2523a345947d083a992e27cc479cf1b5568407751e026d2c",
+        "asset": "73247571006255574285385183553023235681702880602976519365262465179094676130340",
+        "title": "Will Belgium win on 2026-06-21?",
+        "eventSlug": "fifwc-bel-irn-2026-06-21",
+        "slug": "fifwc-bel-irn-2026-06-21-bel",
+        "selection": "Yes",
+        "confidence": 63,
+        "status": "loss",
+        "marketType": "match_prop",
+        "endDate": "2026-06-21T00:00:00Z",
+        "receipt": "https://polymarket.com/event/fifwc-bel-irn-2026-06-21",
+        "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/soccer ball-bba4025f77.png"
+      },
+      {
+        "conditionId": "0x1f2bb0bfc3c7b3c9ab678ce9e89cf68bd6daa83385c4834f669cb00c540276f2",
+        "asset": "38620007602877950561785055194486422431765048561026651240000808038396318703092",
+        "title": "Will Scotland win on 2026-06-13?",
+        "eventSlug": "fifwc-hai-sco-2026-06-13",
+        "slug": "fifwc-hai-sco-2026-06-13-sco",
+        "selection": "Yes",
+        "confidence": 63,
+        "status": "win",
+        "marketType": "match_prop",
+        "endDate": "2026-06-14T00:00:00Z",
+        "receipt": "https://polymarket.com/event/fifwc-hai-sco-2026-06-13",
+        "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/soccer ball-bba4025f77.png"
+      },
+      {
+        "conditionId": "0x2153377bdb8920a0d3227e9a2a68ddb9a001025918b695fe55f66677836e62c6",
+        "asset": "46118045327286643463479614908512136607324773588723756546332480247027286666715",
+        "title": "Will Netherlands win on 2026-06-14?",
+        "eventSlug": "fifwc-nld-jpn-2026-06-14",
+        "slug": "fifwc-nld-jpn-2026-06-14-nld",
+        "selection": "Yes",
+        "confidence": 48,
+        "status": "loss",
+        "marketType": "match_prop",
+        "endDate": "2026-06-14",
+        "receipt": "https://polymarket.com/event/fifwc-nld-jpn-2026-06-14",
+        "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/soccer ball-bba4025f77.png"
+      },
+      {
+        "conditionId": "0x26c10c27cde58e2d6214d65ab562d8142d34723b3b6ec3f40836d24f6d22dfc9",
+        "asset": "1053697017401072331517873943000159665286188444438499834342450614809920055961",
+        "title": "Will United States win on 2026-06-12?",
+        "eventSlug": "fifwc-usa-par-2026-06-12",
+        "slug": "fifwc-usa-par-2026-06-12-usa",
+        "selection": "Yes",
+        "confidence": 47,
+        "status": "win",
+        "marketType": "match_prop",
+        "endDate": "2026-06-13T00:00:00Z",
+        "receipt": "https://polymarket.com/event/fifwc-usa-par-2026-06-12",
+        "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/soccer ball-bba4025f77.png"
+      },
+      {
+        "conditionId": "0xeda55c7409e9f0f436377ea300db42db6c576277846df770abd1391828dde639",
+        "asset": "22172667310022772208699373598096867628027942277851933544696144873879741224440",
+        "title": "Will Canada vs. Bosnia and Herzegovina end in a draw?",
+        "eventSlug": "fifwc-can-bih-2026-06-12",
+        "slug": "fifwc-can-bih-2026-06-12-draw",
+        "selection": "Yes",
+        "confidence": 75,
+        "status": "win",
+        "marketType": "match_prop",
+        "endDate": "2026-06-12T00:00:00Z",
+        "receipt": "https://polymarket.com/event/fifwc-can-bih-2026-06-12",
+        "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/soccer ball-bba4025f77.png"
+      }
+    ],
+    "metadata": {}
+  },
+  "nextStep": "The publisher will validate, write, verify, and update the shared DNA index.",
+  "updatedAt": "2026-06-24T10:02:39Z",
+  "walrus": {
+    "live": true,
+    "verified": true,
+    "blobId": "EzrdyW2eTnyHS0-ZlVpNq2zeoQnexeaFfuLqYTKAaL8",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/EzrdyW2eTnyHS0-ZlVpNq2zeoQnexeaFfuLqYTKAaL8",
+    "attempts": 1
+  },
+  "reviewedAt": "2026-06-23T16:20:09.799Z",
+  "indexWrite": {
+    "live": true,
+    "verified": true,
+    "blobId": "xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "attempts": 1
+  }
+}

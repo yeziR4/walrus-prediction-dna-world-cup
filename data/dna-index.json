@@ -1,15 +1,19 @@
 {
   "type": "prediction_dna_profile_index",
-  "version": 7,
+  "schema_version": 2,
+  "chain": "walrus",
   "network": "Walrus Mainnet",
-  "updatedAt": "2026-06-23T16:02:33.543Z",
+  "version": 7,
+  "count": 7,
+  "created_at": "2026-06-24T10:02:39Z",
+  "updatedAt": "2026-06-24T10:02:39Z",
   "profiles": [
     {
       "id": "dna_mqpf464p_39e1bd69",
       "address": "0x1d1302ac82a59e04805831b74bffc7b84a573c2f",
       "displayName": "minimax",
       "archetype": "The Goalscorer Skeptic",
-      "blobId": "demo_dna_mqpf464p_39e1bd69.profile",
+      "blobId": "VNx9yPR39i9jkrKSILaw1Fjx4cJYSCeqtAN2Z5gpHPc",
       "supersedes": null
     },
     {
@@ -17,7 +21,7 @@
       "address": "0xd52de8b442d1de17fdb3d161d3983be2441c412d",
       "displayName": "Mrgreg",
       "archetype": "The Market Cartographer",
-      "blobId": "demo_dna_mqph00w7_c4485f1e.profile",
+      "blobId": "WzDfrNuYqrppM4Bbarjo92TnzChpg-_X2HClDfJm9XM",
       "supersedes": null
     },
     {
@@ -25,7 +29,7 @@
       "address": "0x83103011d26652b00e210942d7ff54ea45f3ac48",
       "displayName": "chucky",
       "archetype": "The Market Cartographer",
-      "blobId": "demo_dna_mqpieb1z_fbd2b2b4.profile",
+      "blobId": "mHmOUqRqkMzujSOlyNDW1-6_DFmxZvG-z0yEcLSxnpE",
       "supersedes": null
     },
     {
@@ -33,7 +37,7 @@
       "address": "0xff381c7cb8580d30a7e6b93a1f03877041f1738d",
       "displayName": "Bianchi",
       "archetype": "The Market Cartographer",
-      "blobId": "demo_dna_mqpsnxdk_e5123cec.profile",
+      "blobId": "56qId9Sd0hDzDwEd15KCBwXio3DrStsf7y8wlMGb5IY",
       "supersedes": null
     },
     {
@@ -41,17 +45,26 @@
       "address": "0xd52de8b442d1de17fdb3d161d3983be2441c412d",
       "displayName": "external-agent-5709",
       "archetype": "The Contrarian Scout",
-      "blobId": "demo_dna_mqqhox6e_40c2d4a9.profile",
-      "supersedes": "demo_dna_mqph00w7_c4485f1e.profile"
+      "blobId": "FondZ0lR4gBoTvLdmgg7_tupyvug_F9GlK5AWbomN64",
+      "supersedes": "dna_mqph00w7_c4485f1e"
     },
     {
       "id": "dna_mqqu2073_2f107600",
       "address": "0x98db73fd6083ea3aa9814fb8caf945a818e854dc",
       "displayName": "agent-scout",
       "archetype": "The Contrarian Scout",
-      "blobId": "demo_dna_mqqu2073_2f107600.profile",
+      "blobId": "lkCF1YFOlziNqr4R5NOY5dPBYYMNyz_nES44glPtQtc",
+      "supersedes": null
+    },
+    {
+      "id": "dna_mqquon89_2cf46ab8",
+      "address": "0x071165d95ea23928f168e3ffd9603b14f7d88c76",
+      "displayName": "Rjefff",
+      "archetype": "The Market Cartographer",
+      "blobId": "EzrdyW2eTnyHS0-ZlVpNq2zeoQnexeaFfuLqYTKAaL8",
       "supersedes": null
     }
   ],
-  "pendingMainnetWrite": true
+  "blobId": "xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+  "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0"
 }

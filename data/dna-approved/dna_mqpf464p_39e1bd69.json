@@ -1,60 +1,46 @@
 {
   "id": "dna_mqpf464p_39e1bd69",
-  "status": "published_demo",
+  "status": "published",
   "submittedAt": "2026-06-22T16:16:34.058Z",
   "polymarketAddress": "0x1d1302ac82a59e04805831b74bffc7b84a573c2f",
   "displayName": "minimax",
   "profile": {
     "schemaVersion": "1.0",
     "source": "Polymarket public data API",
-    "generatedAt": "2026-06-22T16:16:34.037Z",
+    "generatedAt": "2026-06-24T10:02:39Z",
     "address": "0x1d1302ac82a59e04805831b74bffc7b84a573c2f",
     "displayName": "minimax",
     "archetype": "The Goalscorer Skeptic",
     "summary": {
-      "totalWorldCupPositions": 248,
-      "resolved": 241,
-      "open": 7,
-      "winRate": 68.5,
-      "avgConfidence": 63.8,
-      "calibrationGap": -4.7,
-      "reliability": "Established signal"
+      "totalWorldCupPositions": 259,
+      "resolved": 254,
+      "open": 5,
+      "winRate": 71.3,
+      "avgConfidence": 59.6,
+      "calibrationGap": -11.7,
+      "reliability": "high"
     },
     "traits": [
-      "Goalscorer skeptic",
-      "Player Goals edge",
-      "Tightly calibrated"
+      "Fair value taker",
+      "No side leaning",
+      "Over Under focus",
+      "Goalscorer skeptic"
     ],
     "marketTypes": [
       {
-        "name": "player_goals",
-        "n": 170,
-        "winRate": 74.1
-      },
-      {
-        "name": "match_prop",
-        "n": 47,
-        "winRate": 59.6
-      },
-      {
-        "name": "exact_score",
-        "n": 15,
-        "winRate": 60
-      },
-      {
-        "name": "team_total",
-        "n": 5,
-        "winRate": 20
-      },
-      {
-        "name": "first_to_score",
-        "n": 3,
-        "winRate": 33.3
-      },
-      {
         "name": "over_under",
-        "n": 1,
-        "winRate": 0
+        "n": 183,
+        "winRate": 73.3
+      },
+      {
+        "name": "other",
+        "n": 72,
+        "winRate": 67.6
+      },
+      {
+        "name": "team_or_player_prop",
+        "n": 4,
+        "winRate": 33.3
       }
     ],
     "predictions": [
@@ -3533,18 +3519,20 @@
     ]
   },
   "nextStep": "The publisher will validate, write, verify, and update the shared DNA index.",
-  "updatedAt": "2026-06-22T16:16:34.177Z",
+  "updatedAt": "2026-06-24T10:02:39Z",
   "walrus": {
-    "live": false,
+    "live": true,
     "verified": true,
-    "blobId": "demo_dna_mqpf464p_39e1bd69.profile",
-    "note": "Demo publication completed locally. Mainnet requires MAINNET_PUBLISH_ENABLED=true plus the Walrus write commands."
+    "blobId": "VNx9yPR39i9jkrKSILaw1Fjx4cJYSCeqtAN2Z5gpHPc",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/VNx9yPR39i9jkrKSILaw1Fjx4cJYSCeqtAN2Z5gpHPc",
+    "attempts": 1
   },
   "reviewedAt": "2026-06-22T16:16:34.176Z",
   "indexWrite": {
-    "live": false,
+    "live": true,
     "verified": true,
-    "blobId": "demo_dna-index.generated",
-    "note": "Demo publication completed locally. Mainnet requires MAINNET_PUBLISH_ENABLED=true plus the Walrus write commands."
+    "blobId": "xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/xGNrO5z9-7hOwp-yAt5qJmFSIDbxpleM_txD8DaJAv0",
+    "attempts": 1
   }
 }

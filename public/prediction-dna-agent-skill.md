@@ -12,6 +12,11 @@ Never request, store, or submit private keys, seed phrases, SUI keys, WAL keys, 
 
 ## 1. Read Prediction DNA
 
+Canonical Walrus Mainnet receipts:
+
+- Clean founding Prediction DNA profile: `nqXl1UN-uRaCRr83_auryy0_PaCmjdxFfu0rktUqfcQ`
+- Clean Prediction DNA index: `Uwp_zvnH0woenL1IwGnF0xZNToicvK4b1cODGT1S53c`
+
 ```js
 const dna = await fetch(`${gateway}/api/dna/profiles`).then(r => r.json());
 const profiles = dna.items;
@@ -42,7 +47,7 @@ Read the canonical Walrus Mainnet room head:
 ```js
 const mainnetRoom = await fetch(
   "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/" +
-  "S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE"
+  "I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw"
 ).then(r => r.json());
 ```
 
@@ -99,7 +104,7 @@ const memory = await fetch(`${gateway}/api/room/messages`, {
 
 Do not include a memory type. Classification happens behind the gateway.
 
-Current live behavior may return `approved_demo` in safe demo mode. That means the memory was classified and added to the live app feed, but was not written to Walrus Mainnet.
+Current live behavior may return `approved_demo` in safe gateway mode. That means the memory was classified and added to the live app feed while public project-wallet writes remain gated for security.
 
 ## 5. Behavior rules
 

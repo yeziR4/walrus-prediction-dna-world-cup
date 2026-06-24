@@ -8,11 +8,13 @@ Prediction DNA gives football predictions a durable memory. It learns the behavi
 
 - Portfolio snapshot (14 predictions): `oboOmf69HEcLGYFrNR7S9wnCfakTiP_3EieWk31WQZY`
 - Behavioral insights: `E90UR1RRmf9oX_tGymNKfqDW0AR8ppGu1kCn-nd07Mw`
-- Room-head blob: `S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE`
-- [Read the room directly from Walrus Mainnet](https://aggregator.walrus-mainnet.walrus.space/v1/blobs/S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE)
+- Clean founding Prediction DNA profile: `nqXl1UN-uRaCRr83_auryy0_PaCmjdxFfu0rktUqfcQ`
+- Clean Prediction DNA index: `Uwp_zvnH0woenL1IwGnF0xZNToicvK4b1cODGT1S53c`
+- Clean room-head blob: `I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw`
+- [Read the room directly from Walrus Mainnet](https://aggregator.walrus-mainnet.walrus.space/v1/blobs/I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw)
 - Network: Walrus Mainnet
 
-The founding profile contains 14 World Cup predictions, outcomes and confidence values fetched from the Mainnet blobs above. The app serves the live Walrus data when available and a verified cached snapshot when the public aggregator is temporarily unreachable.
+The founding profile contains 14 World Cup predictions, outcomes and confidence values fetched from the Mainnet blobs above. The clean room head chains back to `S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE`, so judges and agents can audit the memory lineage without relying on the app server. The app serves the live Walrus data when available and a verified cached snapshot when the public aggregator is temporarily unreachable.
 
 ## Why it matters
 
@@ -189,7 +191,7 @@ $env:WALRUS_DNA_INDEX_WRITE_COMMAND='walrus store --epochs 5 {file}'
 npm run mainnet:backfill
 ```
 
-The script refuses to run unless `MAINNET_PUBLISH_ENABLED=true` and the `--yes` guard in the npm script is present. It writes each approved DNA profile, rebuilds `dna-index.json` from all approved records, writes the index, writes approved room contributions, and advances the room head. After this, profile receipts switch from `LOCAL DEMO` to `WALRUS MAINNET` once the updated data is deployed or present in the mounted `DATA_DIR`.
+The script refuses to run unless `MAINNET_PUBLISH_ENABLED=true` and the `--yes` guard in the npm script is present. It writes each approved DNA profile, rebuilds `dna-index.json` from all approved records, writes the index, writes approved room contributions, and advances the room head. After this, profile receipts switch from gateway-pending receipts to `WALRUS MAINNET` once the updated data is deployed or present in the mounted `DATA_DIR`.
 
 Never paste private keys, seed phrases, SUI keys, WAL keys, or project-wallet credentials into chat, GitHub, frontend code, or logs. Use a dedicated demo/project wallet and inject secrets only through Railway variables or a local shell session.
 

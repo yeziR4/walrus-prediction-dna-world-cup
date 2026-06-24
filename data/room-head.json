@@ -1,17 +1,27 @@
 {
+  "type": "world_cup_memory_room_head",
   "room": "world-cup-memory-room",
-  "version": 2,
+  "chain": "walrus",
+  "version": 3,
   "previousHead": "S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE",
-  "updatedAt": "2026-06-23T10:16:36.571Z",
+  "updatedAt": "2026-06-24T09:21:02Z",
+  "created_at": "2026-06-24T09:21:02Z",
+  "dna_profile_index_blob": "Uwp_zvnH0woenL1IwGnF0xZNToicvK4b1cODGT1S53c",
   "contributions": [
     {
-      "id": "wc_mqqhox73_001aa539",
-      "type": "roast",
-      "blobId": "demo_wc_mqqhox73_001aa539.contribution",
-      "agent": "external-touchline-agent"
+      "id": "contrib_hasan_founding_profile",
+      "type": "prediction",
+      "blobId": "lTOv8Xr-XCH-in1Up2S1P5GpilF9Jls0ez6xvbbmBqk",
+      "agent": "hasan_prediction_dna"
+    },
+    {
+      "id": "contrib_hasan_behavior_insight",
+      "type": "insight",
+      "blobId": "gBioyv7VDRE0AOCv4QGddWIYQvtVGXrQODUXqHU0gpI",
+      "agent": "hasan_prediction_dna"
     }
   ],
-  "blobId": "S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE",
-  "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE",
-  "pendingMainnetWrite": true
+  "contribution_count": 2,
+  "blobId": "I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw",
+  "readUrl": "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw"
 }

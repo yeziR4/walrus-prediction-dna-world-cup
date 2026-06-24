@@ -79,14 +79,14 @@ function renderStackedDna(record, rank) {
   const precision = profile.summary.resolved ? `${Number(profile.summary.winRate).toFixed(1)}` : '—';
   const strongest = profile.marketTypes[0];
   const insight = strongest ? `${profile.traits.join('. ')}. Strongest current market: ${titleCase(strongest.name)} at ${Number(strongest.winRate).toFixed(1)}% across ${strongest.n} resolved picks.` : `${profile.traits.join('. ')}. This profile will gain precision as predictions resolve.`;
-  const receipt = live ? `<span>PROFILE RECEIPT</span><b>WALRUS MAINNET</b><code>${escapeHtml(record.walrus.blobId)}</code><a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${encodeURIComponent(record.walrus.blobId)}">Verify profile ↗</a>` : '<span>PROFILE RECEIPT</span><b>LOCAL DEMO</b><code>Not written to Walrus Mainnet</code>';
+  const receipt = live ? `<span>PROFILE RECEIPT</span><b>WALRUS MAINNET</b><code>${escapeHtml(record.walrus.blobId)}</code><a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${encodeURIComponent(record.walrus.blobId)}">Verify profile ↗</a>` : '<span>PROFILE RECEIPT</span><b>GATEWAY PROFILE</b><code>Receipt pending project-wallet write</code>';
   return `<section class="stacked-dna" data-profile="${escapeHtml(record.id)}">
     <div class="stacked-rank"><b>#${rank}</b><span>${profile.summary.resolved ? 'SORTED BY WIN RATE' : 'EMERGING · AWAITING RESULTS'}</span></div>
     <div class="profile-grid">
-      <article class="dna-card"><div class="card-top"><span>SHARED FAN PROFILE</span><b>${live ? 'MAINNET LIVE' : 'LOCAL DEMO'}</b></div><div class="avatar walrus-avatar ${shadeFor(profile.address)}"><img src="/walrus-avatar-clean.png" alt="${escapeHtml(profile.displayName)} Walrus profile"></div><h2>${escapeHtml(profile.archetype)}</h2><p class="handle">${escapeHtml(profile.displayName)} · ${profile.summary.resolved} resolved World Cup predictions</p><div class="dna-ring real-score"><div><strong>${precision}</strong><small>% WIN RATE</small></div></div><div class="traits">${profile.traits.map(trait => `<span>${escapeHtml(trait)}</span>`).join('')}</div></article>
+      <article class="dna-card"><div class="card-top"><span>SHARED FAN PROFILE</span><b>${live ? 'MAINNET LIVE' : 'GATEWAY PROFILE'}</b></div><div class="avatar walrus-avatar ${shadeFor(profile.address)}"><img src="/walrus-avatar-clean.png" alt="${escapeHtml(profile.displayName)} Walrus profile"></div><h2>${escapeHtml(profile.archetype)}</h2><p class="handle">${escapeHtml(profile.displayName)} · ${profile.summary.resolved} resolved World Cup predictions</p><div class="dna-ring real-score"><div><strong>${precision}</strong><small>% WIN RATE</small></div></div><div class="traits">${profile.traits.map(trait => `<span>${escapeHtml(trait)}</span>`).join('')}</div></article>
       <article class="panel chart"><div class="panel-title"><span>MARKET-TYPE DNA</span><small>${profile.summary.resolved} RESOLVED PICKS</small></div><div class="bars">${profile.marketTypes.length ? profile.marketTypes.map(type => `<label>${escapeHtml(titleCase(type.name))} <i style="--v:${Number(type.winRate)}%"></i><b>${Number(type.winRate).toFixed(1)}%</b></label>`).join('') : '<p>Market precision appears after the first result resolves.</p>'}</div></article>
       <article class="panel real-metrics"><div><span>TOTAL PREDICTIONS</span><b>${profile.summary.totalWorldCupPositions}</b></div><button class="metric-action" type="button" data-history-id="${escapeHtml(record.id)}" aria-expanded="false"><span>PREDICTION HISTORY</span><b>${profile.summary.totalWorldCupPositions} PICKS <i>↓</i></b></button><div><span>CALIBRATION</span><b>${profile.summary.calibrationGap === null ? '—' : Number(profile.summary.calibrationGap).toFixed(1)}</b></div><div><span>RELIABILITY</span><b>${escapeHtml(String(profile.summary.reliability).toUpperCase())}</b></div></article>
-      <section class="prediction-drawer" data-history-drawer="${escapeHtml(record.id)}" hidden><div class="drawer-head"><div><span class="kicker">PUBLIC MARKET RECORDS</span><h2>Actual prediction history</h2></div><span>${live ? 'WALRUS + POLYMARKET' : 'POLYMARKET · LOCAL DEMO'}</span></div><div class="prediction-list"></div></section>
+      <section class="prediction-drawer" data-history-drawer="${escapeHtml(record.id)}" hidden><div class="drawer-head"><div><span class="kicker">PUBLIC MARKET RECORDS</span><h2>Actual prediction history</h2></div><span>${live ? 'WALRUS + POLYMARKET' : 'POLYMARKET · GATEWAY'}</span></div><div class="prediction-list"></div></section>
       <article class="panel insight-card"><div class="panel-title"><span>BEHAVIORAL DNA</span><small>GENERATED FROM HISTORY</small></div><blockquote>${escapeHtml(insight)}</blockquote></article>
       <article class="panel receipt">${receipt}</article>
     </div>
@@ -117,7 +117,7 @@ function renderCommunityDnaCard(record) {
   const live = record.status === 'published' && record.walrus?.live;
   const receipt = live && record.walrus?.blobId
     ? `<a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${encodeURIComponent(record.walrus.blobId)}">Verify profile ↗</a>`
-    : '<span class="demo-receipt">LOCAL DEMO · NOT ON MAINNET</span>';
+    : '<span class="demo-receipt">GATEWAY PROFILE · RECEIPT PENDING</span>';
   return `<article class="community-dna-card">
     <div class="community-card-top"><span>${live ? 'WALRUS MAINNET' : 'LOCAL PROFILE'}</span><b>${live ? 'VERIFIED' : 'DEMO'}</b></div>
     <div class="community-avatar ${shadeFor(profile.address)}"><img src="/walrus-avatar-clean.png" alt="${escapeHtml(profile.displayName)} Walrus profile"></div>
@@ -146,7 +146,7 @@ function renderFullCommunityProfile(record) {
   const profile = record.profile;
   const live = record.status === 'published' && record.walrus?.live;
   document.querySelector('#community-detail-title').textContent = `${profile.displayName}'s Prediction DNA`;
-  document.querySelector('#community-detail-source').textContent = live ? 'MAINNET LIVE' : 'LOCAL DEMO';
+  document.querySelector('#community-detail-source').textContent = live ? 'MAINNET LIVE' : 'GATEWAY PROFILE';
   document.querySelector('#community-detail-archetype').textContent = profile.archetype;
   document.querySelector('#community-detail-handle').textContent = `${profile.summary.resolved} resolved World Cup predictions · ${profile.address.slice(0, 6)}…${profile.address.slice(-4)}`;
   document.querySelector('#community-detail-win-rate').textContent = profile.summary.resolved ? Number(profile.summary.winRate).toFixed(1) : '—';
@@ -160,10 +160,10 @@ function renderFullCommunityProfile(record) {
   const strongest = profile.marketTypes[0] || { name: 'unknown', winRate: 0, n: 0 };
   document.querySelector('#community-detail-insight').textContent = `${profile.traits.join('. ')}. The strongest current market is ${titleCase(strongest.name)} at ${Number(strongest.winRate).toFixed(1)}% across ${strongest.n} resolved picks.`;
   document.querySelector('#community-prediction-list').innerHTML = profile.predictions.map(item => `<article class="prediction-row ${escapeHtml(item.status)}"><div class="fixture"><span class="fixture-flags" aria-hidden="true">${flagsForSlug(item.eventSlug)}</span><span><small>${escapeHtml(item.title)}</small><b>${escapeHtml(item.selection)}</b></span></div><dl><dt>CONFIDENCE</dt><dd>${Number(item.confidence).toFixed(0)}%</dd><dt>RESULT</dt><dd>${escapeHtml(item.status)}</dd></dl><a target="_blank" rel="noreferrer" href="${escapeHtml(item.receipt)}">Market ↗</a></article>`).join('');
-  document.querySelector('#community-history-source').textContent = live ? 'WALRUS + POLYMARKET' : 'POLYMARKET · LOCAL DEMO';
+  document.querySelector('#community-history-source').textContent = live ? 'WALRUS + POLYMARKET' : 'POLYMARKET · GATEWAY';
   document.querySelector('#community-detail-receipt').innerHTML = live
     ? `<span>PROFILE RECEIPT</span><b>WALRUS MAINNET</b><code>${escapeHtml(record.walrus.blobId)}</code><a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${encodeURIComponent(record.walrus.blobId)}">Verify profile ↗</a>`
-    : '<span>PROFILE RECEIPT</span><b>LOCAL DEMO</b><code>Not written to Walrus Mainnet</code><p>Mainnet publishing was disabled for this run. Rebuild after the Mainnet canary to receive a verifiable blob.</p>';
+    : '<span>PROFILE RECEIPT</span><b>GATEWAY PROFILE</b><code>Receipt pending project-wallet write</code><p>Public submissions are gated for wallet safety; canonical founding memory is already verifiable on Walrus Mainnet.</p>';
   const drawer = document.querySelector('#community-prediction-drawer'); drawer.hidden = true;
   const toggle = document.querySelector('#community-history-toggle'); toggle.setAttribute('aria-expanded', 'false'); toggle.querySelector('i').textContent = '↓';
   const detail = document.querySelector('#community-profile-detail'); detail.hidden = false; detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -378,7 +378,7 @@ roomForm.addEventListener('submit', async event => {
 
 const codeExamples = {
   'dna-read': `<code>const gateway = "https://walrus-prediction-dna-world-cup-production.up.railway.app";\n\nconst dna = await fetch(\`\${gateway}/api/dna/profiles\`)\n  .then(r =&gt; r.json());\n\n// Sorted by current precision. Use items[] to match fans.\nconst profiles = dna.items;</code>`,
-  'room-read': `<code>const room = await fetch(\n  "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/" +\n  "S-RVidNcwc4624mjOQDAmitoZR6mKS2T4PmI_UAzKdE"\n).then(r =&gt; r.json());\n\n// The head is an index. Fetch contribution blobs for full memory text.\nconst memories = await Promise.all(\n  (room.contributions || room.memory_index || []).map(async item =&gt; {\n    const id = item.blobId || item.walrus_blob_id;\n    return fetch("https://aggregator.walrus-mainnet.walrus.space/v1/blobs/" + id)\n      .then(r =&gt; r.json());\n  })\n);</code>`,
+  'room-read': `<code>const room = await fetch(\n  "https://aggregator.walrus-mainnet.walrus.space/v1/blobs/" +\n  "I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw"\n).then(r =&gt; r.json());\n\n// The head is an index. Fetch contribution blobs for full memory text.\nconst memories = await Promise.all(\n  (room.contributions || room.memory_index || []).map(async item =&gt; {\n    const id = item.blobId || item.walrus_blob_id;\n    return fetch("https://aggregator.walrus-mainnet.walrus.space/v1/blobs/" + id)\n      .then(r =&gt; r.json());\n  })\n);</code>`,
   'dna-add': `<code>const gateway = "https://walrus-prediction-dna-world-cup-production.up.railway.app";\n\nawait fetch(\`\${gateway}/api/dna/requests\`, {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({\n    polymarketAddress: "0xPUBLIC_POLYMARKET_WALLET",\n    displayName: "agent-scout"\n  })\n});</code>`,
   'room-add': `<code>const gateway = "https://walrus-prediction-dna-world-cup-production.up.railway.app";\n\nawait fetch(\`\${gateway}/api/room/messages\`, {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({\n    contributor: "agent-scout",\n    role: "agent",\n    message: "I found a useful World Cup prediction pattern worth remembering."\n  })\n});\n// No memory type: classification belongs to the gateway.</code>`
 };

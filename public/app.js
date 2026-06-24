@@ -1,5 +1,7 @@
 const pages = [...document.querySelectorAll('.page')];
 const links = [...document.querySelectorAll('nav a')];
+const canonicalDnaIndexBlob = 'Uwp_zvnH0woenL1IwGnF0xZNToicvK4b1cODGT1S53c';
+const canonicalRoomHeadBlob = 'I-pUTxZlhl_uZEOlZFBqVNSFNGg9wtBDU7I3N7DzEYw';
 function route() {
   const id = location.hash.slice(1) || 'home';
   pages.forEach(page => page.classList.toggle('active', page.id === id));
@@ -88,7 +90,7 @@ function renderStackedDna(record, rank) {
       <article class="panel real-metrics"><div><span>TOTAL PREDICTIONS</span><b>${profile.summary.totalWorldCupPositions}</b></div><button class="metric-action" type="button" data-history-id="${escapeHtml(record.id)}" aria-expanded="false"><span>PREDICTION HISTORY</span><b>${profile.summary.totalWorldCupPositions} PICKS <i>↓</i></b></button><div><span>CALIBRATION</span><b>${profile.summary.calibrationGap === null ? '—' : Number(profile.summary.calibrationGap).toFixed(1)}</b></div><div><span>RELIABILITY</span><b>${escapeHtml(String(profile.summary.reliability).toUpperCase())}</b></div></article>
       <section class="prediction-drawer" data-history-drawer="${escapeHtml(record.id)}" hidden><div class="drawer-head"><div><span class="kicker">PUBLIC MARKET RECORDS</span><h2>Actual prediction history</h2></div><span>${live ? 'WALRUS + POLYMARKET' : 'POLYMARKET · GATEWAY'}</span></div><div class="prediction-list"></div></section>
       <article class="panel insight-card"><div class="panel-title"><span>BEHAVIORAL DNA</span><small>GENERATED FROM HISTORY</small></div><blockquote>${escapeHtml(insight)}</blockquote></article>
-      <article class="panel receipt">${receipt}</article>
+      <article class="panel receipt">${receipt}${live ? '' : `<a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${canonicalDnaIndexBlob}">Canonical DNA proof ↗</a>`}</article>
     </div>
   </section>`;
 }
@@ -126,6 +128,7 @@ function renderCommunityDnaCard(record) {
     <div class="traits">${profile.traits.map(trait => `<span>${escapeHtml(trait)}</span>`).join('')}</div>
     <div class="community-markets">${profile.marketTypes.slice(0, 3).map(type => `<span>${escapeHtml(titleCase(type.name))} <b>${Number(type.winRate).toFixed(1)}%</b></span>`).join('')}</div>
     ${receipt}
+    ${live ? '' : `<a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${canonicalDnaIndexBlob}">Canonical proof ↗</a>`}
     <button class="open-dna" type="button" data-profile-id="${escapeHtml(record.id)}">Open full Prediction DNA →</button>
   </article>`;
 }
@@ -163,7 +166,7 @@ function renderFullCommunityProfile(record) {
   document.querySelector('#community-history-source').textContent = live ? 'WALRUS + POLYMARKET' : 'POLYMARKET · GATEWAY';
   document.querySelector('#community-detail-receipt').innerHTML = live
     ? `<span>PROFILE RECEIPT</span><b>WALRUS MAINNET</b><code>${escapeHtml(record.walrus.blobId)}</code><a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${encodeURIComponent(record.walrus.blobId)}">Verify profile ↗</a>`
-    : '<span>PROFILE RECEIPT</span><b>GATEWAY PROFILE</b><code>Receipt pending project-wallet write</code><p>Public submissions are gated for wallet safety; canonical founding memory is already verifiable on Walrus Mainnet.</p>';
+    : `<span>PROFILE RECEIPT</span><b>GATEWAY PROFILE</b><code>Receipt pending project-wallet write</code><a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${canonicalDnaIndexBlob}">Canonical DNA index ↗</a><a target="_blank" rel="noreferrer" href="https://walruscan.com/mainnet/blob/${canonicalRoomHeadBlob}">Canonical room head ↗</a><p>Public submissions are gated for wallet safety; canonical founding memory is already verifiable on Walrus Mainnet.</p>`;
   const drawer = document.querySelector('#community-prediction-drawer'); drawer.hidden = true;
   const toggle = document.querySelector('#community-history-toggle'); toggle.setAttribute('aria-expanded', 'false'); toggle.querySelector('i').textContent = '↓';
   const detail = document.querySelector('#community-profile-detail'); detail.hidden = false; detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
